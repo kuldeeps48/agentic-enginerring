@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agent Pipeline</title>
+    <title>Platform Agent Pipeline</title>
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,6 +39,9 @@
             --danger-bg: #fef2f2;
             --success: #16a34a;
             --success-bg: #f0fdf4;
+            --researcher: #be185d;
+            --researcher-bg: #fdf2f8;
+            --researcher-border: #fbcfe8;
 
             --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
             --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
@@ -96,59 +99,6 @@
             max-width: 520px;
             margin: 0 auto;
             position: relative;
-        }
-
-        /* ===== STATS ===== */
-        .stats {
-            display: flex;
-            justify-content: center;
-            gap: 4px;
-            max-width: 720px;
-            margin: -28px auto 0;
-            padding: 0 24px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .stat-card {
-            flex: 1;
-            background: var(--surface);
-            border-radius: var(--radius-sm);
-            padding: 18px 12px;
-            text-align: center;
-            box-shadow: var(--shadow-lg);
-            border: 1px solid var(--border);
-        }
-
-        .stat-card .val {
-            font-size: 2rem;
-            font-weight: 800;
-            line-height: 1;
-            margin-bottom: 4px;
-        }
-
-        .stat-card:nth-child(1) .val {
-            color: var(--architect);
-        }
-
-        .stat-card:nth-child(2) .val {
-            color: var(--gpt);
-        }
-
-        .stat-card:nth-child(3) .val {
-            color: var(--reviewer);
-        }
-
-        .stat-card:nth-child(4) .val {
-            color: var(--implementer);
-        }
-
-        .stat-card .label {
-            font-size: 0.68rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
         }
 
         /* ===== LEGEND ===== */
@@ -274,6 +224,10 @@
             background: var(--reviewer);
         }
 
+        .agent-card.researcher::before {
+            background: var(--researcher);
+        }
+
         .agent-header {
             display: flex;
             align-items: center;
@@ -302,6 +256,10 @@
 
         .agent-icon.reviewer {
             background: var(--reviewer-bg);
+        }
+
+        .agent-icon.researcher {
+            background: var(--researcher-bg);
         }
 
         .agent-title-group {
@@ -372,6 +330,12 @@
             background: var(--success-bg);
             color: var(--success);
             border: 1px solid #bbf7d0;
+        }
+
+        .badge-researcher {
+            background: var(--researcher-bg);
+            color: var(--researcher);
+            border: 1px solid var(--researcher-border);
         }
 
         .agent-desc {
@@ -572,6 +536,15 @@
             background: var(--reviewer);
         }
 
+        .subagent-block.researcher-type {
+            background: var(--researcher-bg);
+            border-color: var(--researcher-border);
+        }
+
+        .subagent-block.researcher-type::before {
+            background: var(--researcher);
+        }
+
         .subagent-header {
             display: flex;
             align-items: center;
@@ -595,6 +568,10 @@
 
         .subagent-name.reviewer-color {
             color: var(--reviewer);
+        }
+
+        .subagent-name.researcher-color {
+            color: var(--researcher);
         }
 
         .subagent-detail {
@@ -625,6 +602,10 @@
 
         .nested-flow.reviewer-nested {
             border-color: rgba(217, 119, 6, 0.25);
+        }
+
+        .nested-flow.researcher-nested {
+            border-color: rgba(190, 24, 93, 0.25);
         }
 
         .nested-step {
@@ -894,10 +875,6 @@
                 gap: 8px;
             }
 
-            .stat-card {
-                min-width: 140px;
-            }
-
             .subagent-block {
                 margin-left: 20px;
             }
@@ -1020,6 +997,10 @@
             background: var(--reviewer);
         }
 
+        .exec-stage.s-researcher::before {
+            background: var(--researcher);
+        }
+
         .exec-stage-num {
             font-size: 0.65rem;
             font-weight: 800;
@@ -1038,6 +1019,10 @@
 
         .exec-stage.s-reviewer .exec-stage-num {
             color: var(--reviewer);
+        }
+
+        .exec-stage.s-researcher .exec-stage-num {
+            color: var(--researcher);
         }
 
         .exec-stage-title {
@@ -1102,6 +1087,10 @@
 
         .exec-mini-dot.d-return {
             background: var(--danger);
+        }
+
+        .exec-mini-dot.d-researcher {
+            background: var(--researcher);
         }
 
         .exec-mini-label {
@@ -1240,7 +1229,7 @@
 
     <!-- ===== HEADER ===== -->
     <div class="header">
-        <h1>Agent Pipeline</h1>
+        <h1>Platform Agent Pipeline</h1>
         <p>Architect → Implementer → Code Reviewer<br>Multi-pass, cross-model verified, auto-fixing</p>
     </div>
 
@@ -1359,6 +1348,63 @@
             <strong>3 primary agents, 3 GPT subagents, 5 cross-model verification passes.</strong><br>
             Architect designs it. Implementer builds it. Reviewer validates it. All findings are auto-fixed and
             re-verified.
+        </div>
+    </div>
+
+    <!-- ===== RESEARCHER SHOWCASE (SEPARATE) ===== -->
+    <div class="exec-section" style="margin-top: 48px">
+        <h2>Research Pipeline</h2>
+        <p class="exec-subtitle">
+            Standalone agent for producing verified documentation. Not connected to the implementation pipeline &mdash;
+            invoked independently when research or documentation is needed.
+        </p>
+
+        <div class="exec-flow" style="max-width: 420px; margin: 0 auto">
+            <div class="exec-stage s-researcher">
+                <div class="exec-stage-num">Standalone</div>
+                <div class="exec-stage-title">Researcher</div>
+                <div class="exec-stage-body">
+                    Researches a topic using codebase, web, and file tools. Drafts a comprehensive .md document,
+                    then gets it proofread and fact-checked by two independent GPT subagents.
+                </div>
+                <div class="exec-mini-flow">
+                    <div class="exec-mini-step">
+                        <span class="exec-mini-dot d-researcher"></span>
+                        <span class="exec-mini-label"><strong>Research</strong> &mdash; gather sources, explore
+                            codebase</span>
+                    </div>
+                    <div class="exec-mini-step">
+                        <span class="exec-mini-dot d-researcher"></span>
+                        <span class="exec-mini-label"><strong>Draft</strong> &mdash; write structured .md
+                            document</span>
+                    </div>
+                    <div class="exec-mini-step">
+                        <span class="exec-mini-dot d-researcher"></span>
+                        <span class="exec-mini-label"><strong>Self-proofread</strong> &mdash; fix grammar, clarity,
+                            flow</span>
+                    </div>
+                    <div class="exec-mini-step">
+                        <span class="exec-mini-dot d-gpt"></span>
+                        <span class="exec-mini-label"><strong>GPT Proofreader</strong> &mdash; grammar, structure,
+                            consistency</span>
+                    </div>
+                    <div class="exec-mini-step">
+                        <span class="exec-mini-dot d-gpt"></span>
+                        <span class="exec-mini-label"><strong>GPT Accuracy Checker</strong> &mdash; facts, logic,
+                            sources</span>
+                    </div>
+                    <div class="exec-mini-step">
+                        <span class="exec-mini-dot d-fix"></span>
+                        <span class="exec-mini-label"><strong>Verify &amp; apply</strong> &mdash; dedupe, accept or
+                            reject findings</span>
+                    </div>
+                    <div class="exec-mini-step">
+                        <span class="exec-mini-dot d-return"></span>
+                        <span class="exec-mini-label"><strong>Deliver</strong> &mdash; final .md saved to
+                            documents/</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1787,6 +1833,147 @@
 
     </div>
 
+    <!-- ═══════ RESEARCHER PIPELINE (SEPARATE) ═══════ -->
+    <div class="exec-divider" style="margin-top:48px">
+        <hr>
+        <div class="divider-label"><span>Researcher Pipeline &mdash; Technical Detail</span></div>
+    </div>
+
+    <div class="pipeline" style="padding-bottom:40px">
+        <style>
+            .pipeline:last-of-type::before {
+                background: var(--researcher);
+                opacity: 0.15;
+            }
+        </style>
+        <div class="agent-block" style="--i:5" onclick="toggle(this)" tabindex="0" role="button" aria-expanded="false"
+            aria-label="Researcher agent details" onkeydown="handleKey(event, this)">
+            <div class="agent-card researcher">
+                <div class="agent-header">
+                    <div class="agent-icon researcher" aria-hidden="true">📝</div>
+                    <div class="agent-title-group">
+                        <div class="agent-name">Researcher</div>
+                        <div class="agent-subtitle">Research, Draft & Verify</div>
+                    </div>
+                    <span class="badge badge-researcher">Standalone</span>
+                </div>
+                <div class="agent-desc">
+                    Produces verified .md documents. Researches topics using codebase, web, and files.
+                    Drafts document, self-proofreads, then sends to two GPT-5.4 subagents for independent
+                    proofreading and accuracy checking. Deduplicates findings, applies valid fixes, rejects invalid
+                    ones.
+                </div>
+                <div class="chips">
+                    <span class="chip"><span class="dot" style="background:var(--researcher)"></span>Independent
+                        pipeline</span>
+                    <span class="chip"><span class="dot" style="background:var(--gpt)"></span>2 GPT subagents</span>
+                </div>
+                <div class="tools-row">
+                    <span class="tool">agent</span><span class="tool">read</span><span class="tool">search</span>
+                    <span class="tool">edit</span><span class="tool">create</span><span class="tool">web/fetch</span>
+                </div>
+                <div class="toggle-hint">Expand steps <span class="chevron">▾</span></div>
+
+                <div class="expandable">
+                    <div class="steps-inner">
+
+                        <div class="step">
+                            <div class="step-num"
+                                style="background:var(--researcher-bg);color:var(--researcher);border-color:var(--researcher-border)">
+                                1</div>
+                            <div class="step-body">
+                                <div class="step-title">Research & Draft</div>
+                                <div class="step-detail">Thoroughly research using search, web/fetch, read. Write
+                                    comprehensive .md with proper structure. Save to <code>documents/research/</code>.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-num"
+                                style="background:var(--researcher-bg);color:var(--researcher);border-color:var(--researcher-border)">
+                                2</div>
+                            <div class="step-body">
+                                <div class="step-title">Self-Proofread</div>
+                                <div class="step-detail">Re-read draft critically. Fix grammar, clarity, structural
+                                    issues. Ensure completeness and flow.</div>
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-num"
+                                style="background:var(--gpt-bg);color:var(--gpt);border-color:var(--gpt-border)">3</div>
+                            <div class="step-body">
+                                <div class="step-title">GPT Proofread (Cross-Model)</div>
+                                <div class="step-detail">Send document to GPT-5.4 proofreader for independent review.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subagent-block gpt-type">
+                            <div class="subagent-header">
+                                <span class="subagent-name gpt-color">↳ GPT Research Proofreader</span>
+                                <span class="badge badge-gpt">GPT-5.4 · Free</span>
+                            </div>
+                            <div class="subagent-detail">
+                                Checks 5 categories: grammar &amp; spelling, clarity &amp; readability, structure &amp;
+                                flow,
+                                consistency, and completeness. Returns quoted issues with suggested fixes.
+                            </div>
+                            <div class="subagent-death">☠️ Context dies — findings returned</div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-num"
+                                style="background:var(--gpt-bg);color:var(--gpt);border-color:var(--gpt-border)">4</div>
+                            <div class="step-body">
+                                <div class="step-title">GPT Accuracy Check (Cross-Model)</div>
+                                <div class="step-detail">Send document to GPT-5.4 accuracy checker for independent
+                                    verification.</div>
+                            </div>
+                        </div>
+
+                        <div class="subagent-block gpt-type">
+                            <div class="subagent-header">
+                                <span class="subagent-name gpt-color">↳ GPT Research Accuracy Checker</span>
+                                <span class="badge badge-gpt">GPT-5.4 · Free</span>
+                            </div>
+                            <div class="subagent-detail">
+                                Checks 5 categories: factual accuracy, technical correctness, logical consistency,
+                                source validity, and currency. Returns verdicts: Accurate / Inaccurate / Uncertain /
+                                Outdated.
+                            </div>
+                            <div class="subagent-death">☠️ Context dies — findings returned</div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-num"
+                                style="background:var(--implementer-bg);color:var(--implementer);border-color:var(--implementer-border)">
+                                5</div>
+                            <div class="step-body">
+                                <div class="step-title">Verify & Apply</div>
+                                <div class="step-detail">Deduplicate findings from both subagents. For each: verify
+                                    independently, apply if correct, reject with reasoning if incorrect, research
+                                    further if uncertain. Save final version.</div>
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-num"
+                                style="background:var(--success-bg);color:var(--success);border-color:#bbf7d0">6</div>
+                            <div class="step-body">
+                                <div class="step-title">Summary</div>
+                                <div class="step-detail">Report: what was researched, file location, findings count from
+                                    each subagent, accepted vs rejected with reasons.</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- ===== CONTEXT BUDGET ===== -->
     <div class="budget-section">
         <div class="budget-card" onclick="toggleBudget()" tabindex="0" role="button" aria-expanded="false"
@@ -1865,6 +2052,7 @@
     </div>
 
     <script>
+        "use strict";
         function toggle(el) {
             el.classList.toggle('open');
             const exp = el.querySelector('.expandable');

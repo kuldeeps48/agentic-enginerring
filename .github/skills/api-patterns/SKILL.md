@@ -674,7 +674,7 @@ else:
 
 | Function                                   | From                     | Returns    | Purpose                                                                                             |
 | ------------------------------------------ | ------------------------ | ---------- | --------------------------------------------------------------------------------------------------- |
-| `current_user.is_admin_user`               | Property on `User` model | `bool`     | `True` if email domain is `@admin.com`                                             |
+| `current_user.is_admin_user`               | Property on `User` model | `bool`     | `True` if email domain is `@1admin.com` or `@platform.ai`                                             |
 | `is_customer_user(user, tenant, org_id)`   | `common.utils`           | `bool`     | `True` if user's org matches the tenant's owning org (manufacturer)                                 |
 | `is_valid_user_organization(user, org_id)` | `common.utils`           | Raises 401 | Side-effect: raises `HTTPException(401)` if non-Admin user doesn't match org. Use for invite routes |
 | `get_current_user_organization_id()`       | `common.security`        | `int`      | From `X-Organization-Id` header                                                                     |

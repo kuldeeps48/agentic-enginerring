@@ -107,6 +107,8 @@ Resulting URL paths nest automatically: `/v1/intelligent-workspace/launch-planni
 - **Tenant tables:** Dynamic schema per tenant (e.g., `TENANT_ABC123`)
 - **All tenant models MUST have:** `__table_args__ = {"schema": None}` - schema is set dynamically at runtime
 - **Tenant schema map:** `tenant_schema_map` in `app/common/tenant_schema_map.py` maps `tenant_id → schema_name`. Bulk-loaded at startup, auto-refreshes from DB on cache miss. Use `tenant_schema_map.put()` after creating a new tenant for immediate local visibility.
+- **Cross-tenant validation:** `CurrentUserMiddleware._user_can_access_tenant()` validates `X-Tenant-Id` against the authenticated user's org memberships. Three paths: Admin (full access), Manufacturer (org owns tenant), Payer/Delegate (active `OrganizationTenantAppAccess` record). Returns 403 on mismatch. Only triggered when `X-Tenant-Id` header is present — platform-scoped apps (PRM, TPA) are unaffected.
+- **Tenant-scoped vs platform-scoped apps:** VBC and AccessIQ are tenant-scoped (per-tenant schemas, require `X-Tenant-Id` + `OrganizationTenantAppAccess`). PRM and TPA are platform-scoped (`PLATFORM` schema only, no `X-Tenant-Id`).
 
 ```python
 class VBCParticipant(Base):
@@ -319,7 +321,7 @@ Tests in `tests/` directory. Run with pytest from project root.
 pytest tests/
 
 # Run specific test file
-pytest tests/patient_id/test_patient_id_generation_service.py -v
+pytest tests/platform_patient_id/test_platform_patient_id_generation_service.py -v
 ```
 
 **Test patterns:**
@@ -340,20 +342,21 @@ with patch("module.get_context_vars", return_value=mock_context_vars):
 
 ## Key Files
 
-| File                                     | Purpose                                                                                                          |
-| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| `app/main.py`                            | Middleware stack, router registration, startup/shutdown hooks                                                    |
-| `app/tenant/tables.py`                   | **Critical:** All tenant table DDL (must sync with migrations)                                                   |
-| `app/common/tenant_schema_map.py`        | Tenant ID → schema name cache (DB-backed, auto-refresh on miss)                                                  |
-| `app/common/config.py`                   | All settings including DB pool tuning (`DB_POOL_SIZE`, etc.)                                                     |
-| `app/common/security.py`                 | Context variable accessors (`get_context_vars`, `get_current_user`)                                              |
-| `app/common/authentication.py`           | `authenticated` dependency for routes                                                                            |
-| `app/common/authorization.py`            | `has_permissions` decorator for RBAC                                                                             |
-| `app/common/base_schema.py`              | Base Pydantic schema with project defaults                                                                       |
-| `app/role/constants.py`                  | `BuiltInPermissions` and `BuiltInSystemRoles` enums                                                              |
-| `app/auth/login/registration_service.py` | User registration flow: signup, org assignment, delegate/TPA/admin/user branching, multi-org pending invitations |
-| `_migrations/`                           | SQL migrations (check folder for latest)                                                                         |
-| `_app_configurations/`                   | Per-app feature configs (AI enablement, etc.)                                                                    |
+| File                                        | Purpose                                                                                                          |
+| ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `app/main.py`                               | Middleware stack, router registration, startup/shutdown hooks                                                    |
+| `app/tenant/tables.py`                      | **Critical:** All tenant table DDL (must sync with migrations)                                                   |
+| `app/common/tenant_schema_map.py`           | Tenant ID → schema name cache (DB-backed, auto-refresh on miss)                                                  |
+| `app/common/config.py`                      | All settings including DB pool tuning (`DB_POOL_SIZE`, etc.)                                                     |
+| `app/common/security.py`                    | Context variable accessors (`get_context_vars`, `get_current_user`)                                              |
+| `app/common/authentication.py`              | `authenticated` dependency for routes                                                                            |
+| `app/common/middlewares/auth_middleware.py` | Cross-tenant validation (`_user_can_access_tenant`), user context setup                                          |
+| `app/common/authorization.py`               | `has_permissions` decorator for RBAC                                                                             |
+| `app/common/base_schema.py`                 | Base Pydantic schema with project defaults                                                                       |
+| `app/role/constants.py`                     | `BuiltInPermissions` and `BuiltInSystemRoles` enums                                                              |
+| `app/auth/login/registration_service.py`    | User registration flow: signup, org assignment, delegate/TPA/admin/user branching, multi-org pending invitations |
+| `_migrations/`                              | SQL migrations (check folder for latest)                                                                         |
+| `_app_configurations/`                      | Per-app feature configs (AI enablement, etc.)                                                                    |
 
 ## Security Notes
 
@@ -398,6 +401,8 @@ JWT signature verification is intentionally disabled (`verify_signature: False`)
 17. **Variable scoping in try/except:** Variables referenced in `except` blocks must be initialized before the `try` statement. If a variable is declared inside `try` and an exception occurs before that line, the `except` handler gets `UnboundLocalError`. Common with `invites`, `errors`, or similar lists used in background task error reporting
 18. **Background task exception differentiation:** Background tasks calling helpers that raise `HTTPException` for validation must catch `HTTPException` separately from generic `Exception`. Preserve `HTTPException.detail` (structured validation data) in the error record. Generic exceptions should store a safe message like `"An unexpected error occurred while processing the file"` — never `str(e)` which can leak SQL errors, connection strings, or stack details. Reference: `app/vbc/payer_bulk_invite_upload_service.py`
 19. **Truncate strings before DB insert:** When storing user-generated or error-derived strings into bounded VARCHAR columns, always truncate to the column limit before inserting (e.g., `error_message[:8000]`). Without truncation, joined validation errors or raw exception strings can exceed the limit, causing a secondary DB failure when recording the error — leaving no record of what went wrong. Reference: `app/common/crud_service.py` `add_payer_bulk_invite_upload_status()`
+20. **Participant removal must clean up `OrganizationTenantAppAccess`:** When implementing participant removal for VBC CE payers or AccessIQ participants, you MUST also delete/disable their `OrganizationTenantAppAccess` records (2 per payer — ADMIN + APP_ADMIN groups). Otherwise removed participants retain tenant access via stale records. Only VBC delegates currently clean up properly (via `remove_tenant_app_access_from_organization()`). Reference: `app/vbc/health_plan/invite_delegate_service.py`
+21. **`OrganizationTenantAppAccess.disabled` is dead code:** The `disabled` column exists and the middleware reads it, but no code path ever sets it to `True`. Access is revoked by hard-deleting records. If adding soft-disable, update both the revocation code AND verify middleware handles it
 
 ## New Feature Checklist
 

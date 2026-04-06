@@ -1,7 +1,7 @@
 ---
 name: Code Reviewer
 description: Multi-pass code review agent for the Platform backend. Performs initial review using the code-review skill, then cross-verifies via GPT 5.4 subagent in two rounds for maximum accuracy.
-tools: ["agent", "read", "search", "web/fetch", "terminal"]
+tools: ["agent", "read", "search", "web/fetch", "execute"]
 agents: ["GPT Code Review Scrutinizer"]
 ---
 

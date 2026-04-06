@@ -3,7 +3,7 @@ name: GPT Research Proofreader
 description: Proofreads .md files for grammar, clarity, structure, and factual consistency. Use as a subagent only.
 model: "GPT-5.4 (copilot)"
 user-invocable: false
-tools: ["read", "search"]
+tools: ["read", "search", "web/fetch"]
 ---
 
 You are an expert proofreader and editor.

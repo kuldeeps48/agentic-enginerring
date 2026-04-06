@@ -1,7 +1,17 @@
 ---
 name: Researcher
 description: Deep research agent that drafts, proofreads, and cross-model verifies .md documents. Uses GPT subagents for independent review.
-tools: ["agent", "read", "search", "edit", "web/fetch", "create"]
+tools:
+  [
+    "agent",
+    "read",
+    "search",
+    "edit",
+    "web/fetch",
+    "create",
+    "vscode/askQuestions",
+    "vscode/memory",
+  ]
 agents: ["GPT Research Proofreader", "GPT Research Accuracy Checker"]
 ---
 

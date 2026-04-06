@@ -8,9 +8,10 @@ tools:
     "search",
     "edit",
     "create",
-    "terminal",
+    "execute",
     "web/fetch",
     "vscode/askQuestions",
+    "vscode/memory",
     "todo",
   ]
 agents: ["Code Reviewer", "Explore"]

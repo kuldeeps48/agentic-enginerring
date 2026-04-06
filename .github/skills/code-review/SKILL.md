@@ -156,6 +156,7 @@ Look for things that contradict each other or break expectations:
 - Is sensitive data (passwords, tokens, PII) being logged?
 - Are there any IDOR (Insecure Direct Object Reference) risks — can a user access another user's/org's data by manipulating IDs?
 - Is the `current_user` or `org_id` used to scope data access?
+- **Participant removal flows:** If removing/disabling a VBC CE payer or AccessIQ participant, are the corresponding `OrganizationTenantAppAccess` records also deleted? (2 per payer — ADMIN + APP_ADMIN groups). Stale records grant tenant access via middleware. Reference: delegate cleanup in `app/vbc/health_plan/invite_delegate_service.py`
 
 ### 2.8 Error Handling
 

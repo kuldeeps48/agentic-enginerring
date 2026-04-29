@@ -4,7 +4,7 @@ An interactive visualization of four multi-agent AI workflows covering implement
 
 ## 🔗 Live Demo
 
-**[View the Pipeline Visualization](https://kuldeeps48.github.io/agentic-enginerring/)**
+**[View the Pipeline Visualization](https://kuldeeps48.github.io/agentic-engineering/)**
 
 ## Overview
 

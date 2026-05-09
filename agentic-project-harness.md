@@ -8,11 +8,11 @@ The harness is not the product. It is the operating layer around the product: in
 
 Three requirement levels apply throughout this document.
 
-| Standard | Meaning |
-| --- | --- |
-| **Required** | Every serious repo needs this. Missing it creates avoidable execution risk. |
-| **Production-required** | Required before production traffic, sensitive data, payments, or customer commitments. |
-| **Project-dependent** | Required only when stage, team size, compliance surface, or growth motion justifies it. |
+| Standard                | Meaning                                                                                 |
+| ----------------------- | --------------------------------------------------------------------------------------- |
+| **Required**            | Every serious repo needs this. Missing it creates avoidable execution risk.             |
+| **Production-required** | Required before production traffic, sensitive data, payments, or customer commitments.  |
+| **Project-dependent**   | Required only when stage, team size, compliance surface, or growth motion justifies it. |
 
 ## Recommended Repo Shape
 
@@ -39,12 +39,12 @@ Folder names matter less than discoverability. A new maintainer or agent should 
 
 ## Readiness Levels
 
-| Level | Meaning | Required when |
-| --- | --- | --- |
-| **0** | Context harness | The repo may be edited by an agent or collaborator. |
-| **1** | Development harness | The repo has repeated work, multiple contributors, or meaningful complexity. |
-| **2** | Production harness | The repo runs production workloads, stores sensitive data, handles money, or has customer commitments. |
-| **3** | Product harness | The project needs customer learning, support, experiments, or go-to-market loops. |
+| Level | Meaning             | Required when                                                                                          |
+| ----- | ------------------- | ------------------------------------------------------------------------------------------------------ |
+| **0** | Context harness     | The repo may be edited by an agent or collaborator.                                                    |
+| **1** | Development harness | The repo has repeated work, multiple contributors, or meaningful complexity.                           |
+| **2** | Production harness  | The repo runs production workloads, stores sensitive data, handles money, or has customer commitments. |
+| **3** | Product harness     | The project needs customer learning, support, experiments, or go-to-market loops.                      |
 
 ---
 
@@ -52,16 +52,16 @@ Folder names matter less than discoverability. A new maintainer or agent should 
 
 Make the repo legible.
 
-| Item | Standard | Purpose | Minimum bar |
-| --- | --- | --- | --- |
-| Main agent instructions | Required | Defines repo-specific behavior, guardrails, commands, architecture facts, and forbidden actions. | Root `AGENTS.md`, `CLAUDE.md`, or equivalent. Names dangerous actions, verification commands, deployment constraints, and source-of-truth docs. |
-| README | Required | Fast entry point for humans. | Describes what the project is, how to run and test it, and where deeper docs live. |
-| Skills | Required for agent-heavy repos | Encodes repeatable workflows agents should follow for specialized tasks. | Repo-local skills for major domains: backend, frontend, release, infra, security, payments, data. |
-| MCPs | Required when external systems matter | Gives agents structured access to external tools and systems. | Documented MCP servers, auth assumptions, allowed actions, and prohibited actions. |
-| Docs folder | Required | Stores durable product, architecture, operational, and decision context. | `docs/` exists with current entry points. Critical context never lives only in chat. |
-| Scratch-pad folder | Required | Safe place for temporary investigation notes and throwaway analysis. | `scratch-pad/` exists, gitignored or clearly marked non-authoritative. |
-| Scripts folder | Required when commands become non-trivial | Holds repeatable operational and development commands. | `scripts/` exists for setup, verification, data, deploy, or maintenance automation. |
-| Decision records | Project-dependent | Preserves *why* important choices were made. | ADRs or equivalent for architecture, vendor, security, payment, data, and launch decisions. |
+| Item                    | Standard                                  | Purpose                                                                                          | Minimum bar                                                                                                                                     |
+| ----------------------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| Main agent instructions | Required                                  | Defines repo-specific behavior, guardrails, commands, architecture facts, and forbidden actions. | Root `AGENTS.md`, `CLAUDE.md`, or equivalent. Names dangerous actions, verification commands, deployment constraints, and source-of-truth docs. |
+| README                  | Required                                  | Fast entry point for humans.                                                                     | Describes what the project is, how to run and test it, and where deeper docs live.                                                              |
+| Skills                  | Required for agent-heavy repos            | Encodes repeatable workflows agents should follow for specialized tasks.                         | Repo-local skills for major domains: backend, frontend, release, infra, security, payments, data.                                               |
+| MCPs                    | Required when external systems matter     | Gives agents structured access to external tools and systems.                                    | Documented MCP servers, auth assumptions, allowed actions, and prohibited actions.                                                              |
+| Docs folder             | Required                                  | Stores durable product, architecture, operational, and decision context.                         | `docs/` exists with current entry points. Critical context never lives only in chat.                                                            |
+| Scratch-pad folder      | Required                                  | Safe place for temporary investigation notes and throwaway analysis.                             | `scratch-pad/` exists, gitignored or clearly marked non-authoritative.                                                                          |
+| Scripts folder          | Required when commands become non-trivial | Holds repeatable operational and development commands.                                           | `scripts/` exists for setup, verification, data, deploy, or maintenance automation.                                                             |
+| Decision records        | Project-dependent                         | Preserves _why_ important choices were made.                                                     | ADRs or equivalent for architecture, vendor, security, payment, data, and launch decisions.                                                     |
 
 ---
 
@@ -69,20 +69,20 @@ Make the repo legible.
 
 Make local development repeatable and reviewable.
 
-| Item | Standard | Purpose | Minimum bar |
-| --- | --- | --- | --- |
-| `.env.example` | Required | Documents required environment variables without leaking secrets. | Every required variable listed with safe placeholders. Comments explain non-obvious values. |
-| `.gitignore` | Required | Keeps build output, secrets, and generated noise out of git. | Covers language, framework, editor, OS, env, build, cache, and temp artifacts. |
-| `.dockerignore` | Required when Docker is used | Keeps Docker build contexts small and prevents accidental secret inclusion. | Excludes git data, env files, dependency caches, build/test output, and local temp files. |
-| Local bootstrap | Required | Lets a new machine become useful quickly. | One documented setup path: dependencies, env, local services, migrations, seed data. |
-| Linting | Required | Catches style, correctness, and suspicious patterns before review. | One documented command that runs locally and in CI. |
-| Formatting | Required | Keeps diffs focused on behavior. | One documented command or hook that formats supported languages. |
-| Pre-commit hooks | Recommended | Moves cheap checks earlier than CI. | Cover formatting, linting, secret scanning, large files, and file hygiene where practical. |
-| Tests | Required | Correctness oracle for agents and humans. | Unit tests for core logic, integration tests for risky boundaries, and one documented run command. |
-| Type checks | Required when the stack supports it | Catches interface drift and unsafe assumptions. | One documented command, runs locally and in CI. |
-| Automated migrations | Required when a database schema exists | Makes schema changes deterministic and reviewable. | Versioned migrations, local apply command, production apply path, rollback or recovery notes. |
-| Changelog folder | Required for release-bearing repos | Captures deployable changes and verification evidence. | `changelog/` with a template and one entry per meaningful release, deploy, or operational change. |
-| Dependency management | Required | Makes builds reproducible. | Lockfiles committed where appropriate. Upgrade process and supported runtime versions documented. |
+| Item                  | Standard                               | Purpose                                                                     | Minimum bar                                                                                        |
+| --------------------- | -------------------------------------- | --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `.env.example`        | Required                               | Documents required environment variables without leaking secrets.           | Every required variable listed with safe placeholders. Comments explain non-obvious values.        |
+| `.gitignore`          | Required                               | Keeps build output, secrets, and generated noise out of git.                | Covers language, framework, editor, OS, env, build, cache, and temp artifacts.                     |
+| `.dockerignore`       | Required when Docker is used           | Keeps Docker build contexts small and prevents accidental secret inclusion. | Excludes git data, env files, dependency caches, build/test output, and local temp files.          |
+| Local bootstrap       | Required                               | Lets a new machine become useful quickly.                                   | One documented setup path: dependencies, env, local services, migrations, seed data.               |
+| Linting               | Required                               | Catches style, correctness, and suspicious patterns before review.          | One documented command that runs locally and in CI.                                                |
+| Formatting            | Required                               | Keeps diffs focused on behavior.                                            | One documented command or hook that formats supported languages.                                   |
+| Pre-commit hooks      | Recommended                            | Moves cheap checks earlier than CI.                                         | Cover formatting, linting, secret scanning, large files, and file hygiene where practical.         |
+| Tests                 | Required                               | Correctness oracle for agents and humans.                                   | Unit tests for core logic, integration tests for risky boundaries, and one documented run command. |
+| Type checks           | Required when the stack supports it    | Catches interface drift and unsafe assumptions.                             | One documented command, runs locally and in CI.                                                    |
+| Automated migrations  | Required when a database schema exists | Makes schema changes deterministic and reviewable.                          | Versioned migrations, local apply command, production apply path, rollback or recovery notes.      |
+| Changelog folder      | Required for release-bearing repos     | Captures deployable changes and verification evidence.                      | `changelog/` with a template and one entry per meaningful release, deploy, or operational change.  |
+| Dependency management | Required                               | Makes builds reproducible.                                                  | Lockfiles committed where appropriate. Upgrade process and supported runtime versions documented.  |
 
 ---
 
@@ -90,22 +90,22 @@ Make local development repeatable and reviewable.
 
 Make the project shippable, observable, and recoverable.
 
-| Item | Standard | Purpose | Minimum bar |
-| --- | --- | --- | --- |
-| CI pipeline | Required | Verifies every branch before merge. | Runs lint, format check, type checks, tests, builds, migration checks, and security checks appropriate to the repo. |
-| CD pipeline | Production-required | Deploys repeatably with auditable inputs. | Manual or automated workflow with environment separation, changelog linkage, rollback notes, and explicit production safeguards. |
-| Infra health checks | Production-required | Detects broken runtime dependencies and bad deploys. | Health endpoints, service checks, DB connectivity, worker checks, queue checks, external dependency checks. |
-| DB backup automation | Production-required when persistent data exists | Protects production data from loss. | Scheduled backups, retention policy, offsite storage, encryption, alerting on backup failure. |
-| DB restore automation | Production-required when backups exist | Proves backups are usable. | Documented restore procedure plus periodic drills against a safe target. |
-| Monitoring | Production-required | Surfaces system health and user-impacting failures. | Metrics, logs, traces or structured events, dashboards, and SLIs. |
-| Alerting | Production-required | Turns important failures into action. | Alerts for uptime, error rate, latency, queue backlog, disk usage, backup freshness, billing, certificate expiry, and critical third-party failures. |
-| Runbooks | Production-required | Makes incidents and maintenance repeatable. | Runbooks for deploy, rollback, restore, incident triage, credential rotation, and dependency outages. |
-| Security audits | Production-required | Catches risky configuration and code before attackers do. | Dependency scanning, secret scanning, static analysis, permission review, production config review. |
-| Vulnerability scanning | Production-required | Tracks known CVEs in dependencies and images. | Automated scans in CI plus scheduled scans for deployed images or infrastructure. |
-| Secrets management | Production-required | Prevents secret leakage and unclear credential ownership. | Secrets out of git, scoped by environment, rotated intentionally, documented by name and purpose only. |
-| Performance testing | Production-required for high-traffic or latency-sensitive systems | Measures capacity before users do. | Load tests for critical paths with baseline latency, throughput, error rate, and resource usage. |
-| Performance optimization | Project-dependent | Converts performance data into engineering work. | Documented bottlenecks, budgets, profiling method, and current known limits. |
-| Incident history | Recommended | Preserves operational learning. | Incidents and near misses produce short writeups: cause, impact, fix, prevention. |
+| Item                     | Standard                                                          | Purpose                                                   | Minimum bar                                                                                                                                          |
+| ------------------------ | ----------------------------------------------------------------- | --------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| CI pipeline              | Required                                                          | Verifies every branch before merge.                       | Runs lint, format check, type checks, tests, builds, migration checks, and security checks appropriate to the repo.                                  |
+| CD pipeline              | Production-required                                               | Deploys repeatably with auditable inputs.                 | Manual or automated workflow with environment separation, changelog linkage, rollback notes, and explicit production safeguards.                     |
+| Infra health checks      | Production-required                                               | Detects broken runtime dependencies and bad deploys.      | Health endpoints, service checks, DB connectivity, worker checks, queue checks, external dependency checks.                                          |
+| DB backup automation     | Production-required when persistent data exists                   | Protects production data from loss.                       | Scheduled backups, retention policy, offsite storage, encryption, alerting on backup failure.                                                        |
+| DB restore automation    | Production-required when backups exist                            | Proves backups are usable.                                | Documented restore procedure plus periodic drills against a safe target.                                                                             |
+| Monitoring               | Production-required                                               | Surfaces system health and user-impacting failures.       | Metrics, logs, traces or structured events, dashboards, and SLIs.                                                                                    |
+| Alerting                 | Production-required                                               | Turns important failures into action.                     | Alerts for uptime, error rate, latency, queue backlog, disk usage, backup freshness, billing, certificate expiry, and critical third-party failures. |
+| Runbooks                 | Production-required                                               | Makes incidents and maintenance repeatable.               | Runbooks for deploy, rollback, restore, incident triage, credential rotation, and dependency outages.                                                |
+| Security audits          | Production-required                                               | Catches risky configuration and code before attackers do. | Dependency scanning, secret scanning, static analysis, permission review, production config review.                                                  |
+| Vulnerability scanning   | Production-required                                               | Tracks known CVEs in dependencies and images.             | Automated scans in CI plus scheduled scans for deployed images or infrastructure.                                                                    |
+| Secrets management       | Production-required                                               | Prevents secret leakage and unclear credential ownership. | Secrets out of git, scoped by environment, rotated intentionally, documented by name and purpose only.                                               |
+| Performance testing      | Production-required for high-traffic or latency-sensitive systems | Measures capacity before users do.                        | Load tests for critical paths with baseline latency, throughput, error rate, and resource usage.                                                     |
+| Performance optimization | Project-dependent                                                 | Converts performance data into engineering work.          | Documented bottlenecks, budgets, profiling method, and current known limits.                                                                         |
+| Incident history         | Recommended                                                       | Preserves operational learning.                           | Incidents and near misses produce short writeups: cause, impact, fix, prevention.                                                                    |
 
 ---
 
@@ -113,18 +113,18 @@ Make the project shippable, observable, and recoverable.
 
 Help the project learn from users and operate as a real product.
 
-| Item | Standard | Purpose | Minimum bar |
-| --- | --- | --- | --- |
-| User feedback collection | Required for user-facing products | Captures what users actually experience. | In-app feedback, support email, forms, surveys, or structured issue intake. |
-| Feedback analysis | Required once feedback volume is non-trivial | Turns raw feedback into product decisions. | Tagging, prioritization, recurring review cadence, and links from decisions back to evidence. |
-| License documentation | Required | Makes usage rights explicit. | `LICENSE` file, private/proprietary notice, or internal-use statement. |
-| Legal documentation | Production-required for user-facing products | Covers user-facing obligations. | Privacy policy, terms, data deletion process, security contact, and compliance notes as relevant. |
-| Feature flags | Project-dependent | Decouples deploy from release. | Flags have owner, default state, expiry plan, audit trail, and kill-switch behavior. |
-| Experimentation framework | Project-dependent | Measures product changes without corrupting core metrics. | Clear ownership, assignment logic, success metrics, guardrail metrics, and cleanup plan. |
-| Customer support system | Required for customer-facing products | Tracks user issues to resolution. | Support inbox or ticketing tool with triage rules, response expectations, and escalation paths. |
-| Issue tracking system | Required for multi-step work | Keeps product and engineering work accountable. | Backlog with owners, priorities, states, and links to PRs, releases, incidents, or user reports. |
-| Marketing campaigns | Project-dependent | Creates repeatable acquisition and launch work. | Campaign plan, target audience, channels, messaging, assets, tracking links, and result review. |
-| Outreach campaigns | Project-dependent | Builds direct learning and distribution loops. | Prospect or user lists, outreach scripts, follow-up cadence, consent boundaries, and outcome tracking. |
+| Item                      | Standard                                     | Purpose                                                   | Minimum bar                                                                                            |
+| ------------------------- | -------------------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| User feedback collection  | Required for user-facing products            | Captures what users actually experience.                  | In-app feedback, support email, forms, surveys, or structured issue intake.                            |
+| Feedback analysis         | Required once feedback volume is non-trivial | Turns raw feedback into product decisions.                | Tagging, prioritization, recurring review cadence, and links from decisions back to evidence.          |
+| License documentation     | Required                                     | Makes usage rights explicit.                              | `LICENSE` file, private/proprietary notice, or internal-use statement.                                 |
+| Legal documentation       | Production-required for user-facing products | Covers user-facing obligations.                           | Privacy policy, terms, data deletion process, security contact, and compliance notes as relevant.      |
+| Feature flags             | Project-dependent                            | Decouples deploy from release.                            | Flags have owner, default state, expiry plan, audit trail, and kill-switch behavior.                   |
+| Experimentation framework | Project-dependent                            | Measures product changes without corrupting core metrics. | Clear ownership, assignment logic, success metrics, guardrail metrics, and cleanup plan.               |
+| Customer support system   | Required for customer-facing products        | Tracks user issues to resolution.                         | Support inbox or ticketing tool with triage rules, response expectations, and escalation paths.        |
+| Issue tracking system     | Required for multi-step work                 | Keeps product and engineering work accountable.           | Backlog with owners, priorities, states, and links to PRs, releases, incidents, or user reports.       |
+| Marketing campaigns       | Project-dependent                            | Creates repeatable acquisition and launch work.           | Campaign plan, target audience, channels, messaging, assets, tracking links, and result review.        |
+| Outreach campaigns        | Project-dependent                            | Builds direct learning and distribution loops.            | Prospect or user lists, outreach scripts, follow-up cadence, consent boundaries, and outcome tracking. |
 
 ---
 
@@ -207,6 +207,134 @@ Review the harness at these moments:
 - After each incident or failed deploy
 - Before adding payments, sensitive data, or compliance-sensitive workflows
 - Quarterly for active production systems
+
+## Completion Discipline
+
+After any file edit, completion is not done until a fresh pass is run from repository state, not conversation memory. If context limits prevent that pass, report an incomplete handoff instead of a completed task. Add the following block to the repo's `AGENTS.md` (or equivalent agent instructions file).
+
+### Completion Pass
+
+- Start the completion pass with `git status --short` and `git diff --name-only` to recover the actual touched-file set.
+- Review the actual diff before final response.
+- Re-read every touched file and the nearby call sites, tests, docs, or resources that make the change correct.
+- If the thread was compacted, resumed, interrupted, or the work spanned many steps, first reconstruct state from disk: `git status`, `git diff`, relevant files, and recent test output if available.
+- Check the relevant repo skill and source-of-truth docs when the change touches Android, backend, payments, verification, launch, CI, privacy, or product behavior.
+- Look specifically for edge cases, stale assumptions, missing tests, bad user-facing strings, state/cache leakage, money-state/idempotency issues, privacy leaks, and docs drift.
+- Run the repo completion check script when present. This script is a mechanical guardrail only; it does not replace semantic review.
+- Fix issues found during the completion pass before final response.
+- Run the narrowest meaningful verification. For high-risk backend, Android, payment, verification, deploy, or release changes, run the broader relevant checks unless blocked.
+- If verification is skipped or blocked, say exactly why and name the residual risk.
+- Final response after edits must state files changed, checks run, and remaining risk. Do not claim completion from implementation alone.
+
+### Context Budget Rule
+
+If context is tight, scale the completion pass down but do not skip it:
+
+- Prioritize review in this order: money/payment state, auth/privacy, production/deploy risk, data correctness, Android runtime state, user-facing UX, docs/tests.
+- Re-read only the highest-risk touched files and closest call sites when there is not room for all touched files.
+- Run at least one narrow verification command when feasible.
+- If there is not enough context to inspect the diff and verify meaningfully, stop and say the completion pass is incomplete. Name the files changed, what was checked, what remains unchecked, and the next verification command to run.
+
+### Context Reset Protocol
+
+Agents cannot rely on conversation memory after long work, compaction, or interruption.
+
+- After compaction, resume, interruption, or a long-running session, restart Completion Discipline from disk.
+- Do not assume the compaction summary captured all important implementation details.
+- If the agent cannot inspect the diff meaningfully after context loss, report an incomplete handoff instead of completion.
+
+---
+
+## Completion Check Script
+
+A lightweight deterministic guardrail that agents run after edits. Place at `scripts/completion_check.sh`. The script is mechanical only — it does not replace semantic review.
+
+What it checks:
+
+| Check                                                                              | Purpose                                        |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------- |
+| `git status --short`                                                               | Dirty files (uncommitted changes)              |
+| `git diff --name-only HEAD`                                                        | Touched files vs last commit                   |
+| `git ls-files --others --exclude-standard`                                         | Untracked files                                |
+| `git diff --check HEAD`                                                            | Conflict markers and whitespace errors         |
+| Grep for `TODO`, `FIXME`, `HACK`, `XXX`, `debugger`, `console.log`, `breakpoint()` | Leftover debug / TODO markers in touched files |
+| File size check (>500 KB)                                                          | Large uncommitted files                        |
+
+```bash
+#!/usr/bin/env bash
+# completion_check.sh — lightweight deterministic guardrail
+# Run after edits, before final response. Prints dirty files, touched files,
+# and runs cheap repo checks. Not a substitute for semantic review.
+set -euo pipefail
+
+echo "=== Completion Check ==="
+echo ""
+
+# 1. Dirty files (uncommitted changes)
+echo "--- Dirty files (git status) ---"
+git status --short || echo "(not a git repo or git unavailable)"
+echo ""
+
+# 2. Touched files vs last commit
+echo "--- Touched files (staged + unstaged diff) ---"
+git diff --name-only HEAD 2>/dev/null || git diff --name-only 2>/dev/null || echo "(no diff available)"
+echo ""
+
+# 3. Untracked files
+echo "--- Untracked files ---"
+git ls-files --others --exclude-standard 2>/dev/null || echo "(unable to list)"
+echo ""
+
+# 4. Conflict markers
+echo "--- Conflict markers ---"
+if git diff --check HEAD 2>/dev/null; then
+  echo "None found."
+else
+  echo "WARNING: conflict markers or whitespace errors detected above."
+fi
+echo ""
+
+# 5. Leftover debug / TODO markers in touched files
+echo "--- Debug / TODO markers in touched files ---"
+TOUCHED=$(git diff --name-only HEAD 2>/dev/null || git diff --name-only 2>/dev/null || true)
+if [ -n "$TOUCHED" ]; then
+  echo "$TOUCHED" | while read -r f; do
+    if [ -f "$f" ]; then
+      grep -Hn "TODO\|FIXME\|HACK\|XXX\|debugger\|console\.log\|breakpoint()" "$f" 2>/dev/null || true
+    fi
+  done
+  MARKER_HITS=$( (echo "$TOUCHED" | while read -r f; do [ -f "$f" ] && grep -l "TODO\|FIXME\|HACK\|XXX\|debugger\|console\.log\|breakpoint()" "$f" 2>/dev/null || true; done) | wc -l | tr -d ' ')
+  if [ "$MARKER_HITS" = "0" ]; then
+    echo "None found."
+  fi
+else
+  echo "No touched files to scan."
+fi
+echo ""
+
+# 6. Large uncommitted files (>500KB)
+echo "--- Large uncommitted files (>500KB) ---"
+if [ -n "$TOUCHED" ]; then
+  echo "$TOUCHED" | while read -r f; do
+    if [ -f "$f" ]; then
+      SIZE=$(wc -c < "$f" | tr -d ' ')
+      if [ "$SIZE" -gt 512000 ]; then
+        echo "WARNING: $f is ${SIZE} bytes"
+      fi
+    fi
+  done
+  echo "Check complete."
+else
+  echo "No touched files to check."
+fi
+echo ""
+
+echo "=== Completion Check Done ==="
+```
+
+Later this script can be wired into git hooks, but the primary win is making agents run it as part of the Completion Discipline before declaring a task done.
+
+---
 
 ## Operating Principle
 

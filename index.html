@@ -1896,6 +1896,124 @@
                                 </div>
                             </div>
                         </details>
+
+                        <!-- Completion Discipline -->
+                        <details class="workflow-details">
+                            <summary>
+                                <span class="details-summary-copy">
+                                    <span class="details-summary-title">Completion Discipline</span>
+                                    <span class="details-summary-meta">Completion pass, context budget, context reset
+                                        protocol, and completion check script</span>
+                                </span>
+                            </summary>
+                            <div class="workflow-details-body">
+                                <div class="source-chips">
+                                    <span class="source-chip">AGENTS.md §&nbsp;Completion Discipline</span>
+                                    <span class="source-chip">scripts/completion_check.sh</span>
+                                </div>
+                                <div class="pipeline-layout">
+                                    <aside class="sidebar-stack">
+                                        <div class="sidebar-card">
+                                            <div class="kicker">Core rule</div>
+                                            <h3>Ground truth is disk, not memory</h3>
+                                            <p>Completion is not done until a fresh pass is run from repository
+                                                state. If context limits prevent that pass, report an incomplete
+                                                handoff instead of a completed task.</p>
+                                            <div class="artifact-list">
+                                                <span class="tag">git status</span>
+                                                <span class="tag">git diff</span>
+                                                <span class="tag">re-read touched files</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="sidebar-card source-note">
+                                            <div class="kicker">Context reset protocol</div>
+                                            <h3>After compaction or interruption</h3>
+                                            <ul>
+                                                <li>Restart Completion Discipline from disk — never rely on conversation
+                                                    memory.</li>
+                                                <li>Do not assume the compaction summary captured all details.</li>
+                                                <li>If the agent cannot inspect the diff meaningfully, report an
+                                                    incomplete handoff.</li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="sidebar-card">
+                                            <div class="kicker">Mechanical guardrail</div>
+                                            <h3>completion_check.sh</h3>
+                                            <p>A lightweight script agents run before final response. Prints dirty
+                                                files, touched files, untracked files, conflict markers, debug/TODO
+                                                markers, and large uncommitted files. Can be wired into git hooks
+                                                later.</p>
+                                            <div class="artifact-list">
+                                                <span class="tag">scripts/</span>
+                                                <span class="tag">deterministic</span>
+                                                <span class="tag">hook-ready</span>
+                                            </div>
+                                        </div>
+                                    </aside>
+
+                                    <div class="flow-stack">
+                                        <div class="flow-step">
+                                            <div class="step-index">1</div>
+                                            <div class="step-chips">
+                                                <span class="chip scope">completion pass</span>
+                                            </div>
+                                            <h3>Recover state from disk</h3>
+                                            <p>Start with <code>git status --short</code> and
+                                                <code>git diff --name-only</code>
+                                                to recover the actual touched-file set. Review the diff, re-read
+                                                every touched file and nearby call sites, tests, docs, or resources.</p>
+                                        </div>
+
+                                        <div class="flow-step">
+                                            <div class="step-index">2</div>
+                                            <div class="step-chips">
+                                                <span class="chip implement">inspect</span>
+                                            </div>
+                                            <h3>Look for problems</h3>
+                                            <p>Edge cases, stale assumptions, missing tests, bad user-facing strings,
+                                                state/cache leakage, money-state/idempotency issues, privacy leaks,
+                                                and docs drift. Check relevant skills and source-of-truth docs.</p>
+                                        </div>
+
+                                        <div class="flow-step">
+                                            <div class="step-index">3</div>
+                                            <div class="step-chips">
+                                                <span class="chip review">verify</span>
+                                            </div>
+                                            <h3>Run the completion check script and fix</h3>
+                                            <p>Run <code>scripts/completion_check.sh</code>. Run the narrowest
+                                                meaningful verification. Fix issues found during the pass before
+                                                final response. If verification is blocked, say why and name the
+                                                residual risk.</p>
+                                        </div>
+
+                                        <div class="flow-step">
+                                            <div class="step-index">4</div>
+                                            <div class="step-chips">
+                                                <span class="chip summary">report</span>
+                                            </div>
+                                            <h3>State files changed, checks run, remaining risk</h3>
+                                            <p>Final response must state files changed, checks run, and remaining
+                                                risk. Do not claim completion from implementation alone.</p>
+                                        </div>
+
+                                        <div class="summary-card">
+                                            <div class="step-chips summary-badges">
+                                                <span class="chip review">context budget rule</span>
+                                            </div>
+                                            <h3>When context is tight</h3>
+                                            <p>Scale the pass down but do not skip it. Prioritize: money/payment
+                                                state → auth/privacy → production/deploy risk → data correctness
+                                                → runtime state → user-facing UX → docs/tests. Re-read only the
+                                                highest-risk files. Run at least one narrow verification. If
+                                                insufficient context remains, report the pass as incomplete.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </details>
                     </div>
                 </div>
             </section>

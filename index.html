@@ -476,6 +476,11 @@
             --tab-color-b: #d53057;
         }
 
+        .tab-button[data-tone="harness"] {
+            --tab-color-a: #3e7b54;
+            --tab-color-b: #5a9e6e;
+        }
+
         main {
             margin-top: 24px;
         }
@@ -1384,6 +1389,11 @@
             color: var(--crimson);
         }
 
+        .tone-harness .section-head h2,
+        .tone-harness .kicker {
+            color: var(--moss);
+        }
+
         @media (max-width: 1100px) {
 
             .top-controls {
@@ -1517,6 +1527,8 @@
                     data-tone="documentation">Documentation</button>
                 <button class="tab-button" type="button" data-tab-target="security"
                     data-tone="security">Security</button>
+                <button class="tab-button" type="button" data-tab-target="harness" data-tone="harness">Project
+                    Harness</button>
             </nav>
         </div>
 
@@ -1682,6 +1694,40 @@
                                     <div class="overview-meta-item">
                                         <span class="overview-meta-label">Output</span>
                                         <span class="overview-meta-value">Prioritized risk report</span>
+                                    </div>
+                                </div>
+                            </article>
+
+                            <article class="overview-card" data-open-tab="harness" role="button" tabindex="0"
+                                aria-label="Open project harness">
+                                <div class="card-top">
+                                    <span class="kicker" style="color: var(--moss);">Project Harness</span>
+                                    <span class="nav-chip">Open reference</span>
+                                </div>
+                                <h3>The baseline operating layer every agent-friendly repo should carry.</h3>
+                                <p>Four readiness levels from context harness through product harness, with checklists
+                                    and anti-patterns for each.</p>
+                                <div class="mini-flow" style="margin-top: 16px;">
+                                    <span class="chip scope">L0 context</span>
+                                    <span class="arrow">&rarr;</span>
+                                    <span class="chip implement">L1 development</span>
+                                    <span class="arrow">&rarr;</span>
+                                    <span class="chip review">L2 production</span>
+                                    <span class="arrow">&rarr;</span>
+                                    <span class="chip reconcile">L3 product</span>
+                                </div>
+                                <div class="overview-meta">
+                                    <div class="overview-meta-item">
+                                        <span class="overview-meta-label">Type</span>
+                                        <span class="overview-meta-value">Reference framework</span>
+                                    </div>
+                                    <div class="overview-meta-item">
+                                        <span class="overview-meta-label">Levels</span>
+                                        <span class="overview-meta-value">4 readiness tiers</span>
+                                    </div>
+                                    <div class="overview-meta-item">
+                                        <span class="overview-meta-label">Output</span>
+                                        <span class="overview-meta-value">Agent-ready repo baseline</span>
                                     </div>
                                 </div>
                             </article>
@@ -2675,6 +2721,166 @@
                                                 is the
                                                 structured report with executive summary, threat intelligence, findings,
                                                 documented exceptions, and recommendations.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+            </section>
+            <section class="tab-panel" id="tab-harness">
+                <div class="section-card tone-harness">
+                    <div class="section-head">
+                        <div>
+                            <div class="kicker">Project Harness</div>
+                            <h2>The baseline operating layer every agent-friendly repo should carry</h2>
+                            <p>Instructions, checks, scripts, docs, pipelines, observability, recovery, and feedback
+                                loops — organized into four readiness levels so you can adopt incrementally.</p>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="executive-summary">
+                            <article class="executive-flow-card">
+                                <div class="kicker">Readiness levels</div>
+                                <div class="executive-flow-track">
+                                    <div class="executive-node">
+                                        <span class="executive-node-index">L0</span>
+                                        <h3>Context</h3>
+                                        <p>Make the repo legible: agent instructions, README, docs, scratch-pad.</p>
+                                    </div>
+                                    <span class="executive-arrow">&rarr;</span>
+                                    <div class="executive-node">
+                                        <span class="executive-node-index">L1</span>
+                                        <h3>Development</h3>
+                                        <p>Repeatable local dev: env, lint, format, tests, migrations, changelog.</p>
+                                    </div>
+                                    <span class="executive-arrow">&rarr;</span>
+                                    <div class="executive-node">
+                                        <span class="executive-node-index">L2</span>
+                                        <h3>Production</h3>
+                                        <p>Ship safely: CI/CD, monitoring, alerting, backups, runbooks, security.</p>
+                                    </div>
+                                    <span class="executive-arrow">&rarr;</span>
+                                    <div class="executive-node">
+                                        <span class="executive-node-index">L3</span>
+                                        <h3>Product</h3>
+                                        <p>Learn from users: feedback, support, flags, experiments, legal.</p>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+
+                        <details class="workflow-details">
+                            <summary>
+                                <span class="details-summary-copy">
+                                    <span class="details-summary-title">More details</span>
+                                    <span class="details-summary-meta">Readiness levels, recommended repo shape,
+                                        checklists, and anti-patterns</span>
+                                </span>
+                            </summary>
+                            <div class="workflow-details-body">
+                                <div class="source-chips">
+                                    <span class="source-chip">agentic-project-harness.md</span>
+                                </div>
+                                <div class="pipeline-layout">
+                                    <aside class="sidebar-stack">
+                                        <div class="sidebar-card">
+                                            <div class="kicker">Recommended repo shape</div>
+                                            <h3>Default skeleton</h3>
+                                            <p>AGENTS.md, README, .env.example, .gitignore, .dockerignore, docs/,
+                                                scripts/, changelog/, scratch-pad/, infra/, migrations/, tests/, and
+                                                CI/CD workflows.</p>
+                                            <div class="artifact-list">
+                                                <span class="tag">discoverability-first</span>
+                                                <span class="tag">convention over configuration</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="sidebar-card">
+                                            <div class="kicker">Standards</div>
+                                            <h3>Three requirement levels</h3>
+                                            <p>Each harness item is marked <strong>Required</strong>,
+                                                <strong>Production-required</strong>, or
+                                                <strong>Project-dependent</strong> so you know what to adopt and when.
+                                            </p>
+                                            <div class="artifact-list">
+                                                <span class="tag">incremental adoption</span>
+                                                <span class="tag">risk-proportionate</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="sidebar-card source-note">
+                                            <div class="kicker">Operating principle</div>
+                                            <h3>No hidden memory</h3>
+                                            <ul>
+                                                <li>If a repo needs hidden memory to be changed safely, the harness is
+                                                    incomplete.</li>
+                                                <li>Encode that memory in files, scripts, checks, dashboards, or
+                                                    documented workflows.</li>
+                                            </ul>
+                                        </div>
+                                    </aside>
+
+                                    <div class="flow-stack">
+                                        <div class="flow-step">
+                                            <div class="step-index">L0</div>
+                                            <div class="step-chips">
+                                                <span class="chip scope">context harness</span>
+                                                <span class="chip primary">required</span>
+                                            </div>
+                                            <h3>Level 0 — Make the repo legible</h3>
+                                            <p>Root agent instructions (AGENTS.md / CLAUDE.md), README, skills for
+                                                repeatable agent workflows, MCP server configs, docs folder,
+                                                scratch-pad, scripts folder, and decision records.</p>
+                                        </div>
+
+                                        <div class="flow-step">
+                                            <div class="step-index">L1</div>
+                                            <div class="step-chips">
+                                                <span class="chip implement">development harness</span>
+                                                <span class="chip primary">required</span>
+                                            </div>
+                                            <h3>Level 1 — Make local development repeatable</h3>
+                                            <p>.env.example, .gitignore, .dockerignore, local bootstrap, linting,
+                                                formatting, pre-commit hooks, tests, type checks, automated migrations,
+                                                changelog folder, and dependency management.</p>
+                                        </div>
+
+                                        <div class="flow-step">
+                                            <div class="step-index">L2</div>
+                                            <div class="step-chips">
+                                                <span class="chip review">production harness</span>
+                                                <span class="chip primary">production-required</span>
+                                            </div>
+                                            <h3>Level 2 — Make the project shippable and recoverable</h3>
+                                            <p>CI/CD pipelines, health checks, DB backup and restore automation,
+                                                monitoring, alerting, runbooks, security audits, vulnerability scanning,
+                                                secrets management, performance testing, and incident history.</p>
+                                        </div>
+
+                                        <div class="flow-step">
+                                            <div class="step-index">L3</div>
+                                            <div class="step-chips">
+                                                <span class="chip reconcile">product harness</span>
+                                                <span class="chip primary">project-dependent</span>
+                                            </div>
+                                            <h3>Level 3 — Learn from users and operate as a product</h3>
+                                            <p>User feedback collection and analysis, license and legal documentation,
+                                                feature flags, experimentation framework, customer support system, issue
+                                                tracking, marketing and outreach campaigns.</p>
+                                        </div>
+
+                                        <div class="summary-card">
+                                            <div class="step-chips summary-badges">
+                                                <span class="chip summary">agent readiness</span>
+                                                <span class="chip review">checklist</span>
+                                            </div>
+                                            <h3>Agent readiness checklist</h3>
+                                            <p>Can an agent find instructions, commands, and verification in under a
+                                                minute? Are secrets safe? Are dangerous actions guarded? Is CI a
+                                                trustworthy merge gate? Is rollback documented? Can the database be
+                                                restored? Would a new maintainer know where everything lives?</p>
                                         </div>
                                     </div>
                                 </div>

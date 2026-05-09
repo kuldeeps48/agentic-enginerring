@@ -71,9 +71,13 @@ Pen Tester performs a read-only grey-box assessment. It starts with online threa
 - **Two-cycle maximum** — If issues remain after 2 review cycles, they are escalated with an assessment rather than looped indefinitely
 - **Sequential documentation** — Documenter finishes one complete feature (both documents + verification + backlog update) before starting the next
 
+## Agentic Project Harness
+
+The **[Agentic Project Harness](agentic-project-harness.md)** defines the baseline operating layer every agent-friendly repository should carry — instructions, checks, scripts, docs, pipelines, observability, recovery, and feedback loops. It covers four readiness levels from basic context harness through full product harness, with checklists and anti-patterns for each.
+
 ## Features of the Visualization
 
-- Tab-based navigation across all four pipelines (Overview, Research, Implementation, Documentation, Security)
+- Tab-based navigation across all four pipelines plus the Project Harness reference (Overview, Research, Implementation, Documentation, Security, Project Harness)
 - Executive flow summary for each pipeline showing the 4 major stages
 - Expandable detail sections with full step-by-step flows, subagent cards, artifact listings, and model-pinning information
 - Overview cards that deep-link directly into each pipeline's detail view
